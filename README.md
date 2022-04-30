@@ -1,6 +1,6 @@
 # auto-diagnostic
 
-Esse projeto tem como objetivo desenvolver uma sistema que aplica técnicas de NLP em exames clínicos para ajudar médicos na obtenção de visão geral sobre o histórico de do paciente e facilitar em tomadas de decisão.
+Esse projeto tem como objetivo desenvolver uma sistema que aplica técnicas de NLP em exames clínicos para ajudar médicos na obtenção de uma visão geral sobre o histórico de do paciente e facilitar em tomadas de decisão.
 
 ### Pré-requisitos:
 
