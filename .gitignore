@@ -1,0 +1,15 @@
+# Environment
+.venv
+venv
+
+
+# Poetry lock
+poetry.lock
+
+# Cache
+__pycache__
+*.pyc
+
+# Large data files
+data/processed/*
+!data/processed/.gitkeep
