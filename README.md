@@ -14,27 +14,27 @@ Esse projeto tem como objetivo desenvolver uma sistema que aplica técnicas de N
     + Clonar o projeto
     + Dentro da pasta do projeto executar:
     ```
-    $ poetry install
+    poetry install
     ```
 - **Utilizando Pip**
     + Clonar o projeto
     + Dentro da pasta do projeto executar:
     ```
-    $ python -m venv .venv
-    $ source .venv/bin/activate
-    $ pip install -e .
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -e .
     ```
 
 Para conseguir utilizar as dependências do projeto é preciso estar dentro da virtualenv gerada, para isso, se ainda não estiver, execute:
 
 - **Com Poetry**
 ```
-$ poetry shell
+poetry shell
 ```
 
 - **Sem Poetry**
 ```
-$ source .venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### Desenvolvimento
