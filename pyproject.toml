@@ -5,7 +5,7 @@ description = ""
 authors = ["André Rodrigues <andrelmarques11@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7.9"
 stanza = "^1.4.0"
 jupyter = "^1.0.0"
 spacy = "^3.3.0"
