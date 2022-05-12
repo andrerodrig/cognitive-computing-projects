@@ -5,10 +5,10 @@ description = ""
 authors = ["André Rodrigues <andrelmarques11@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7.9"
-stanza = "^1.4.0"
+python = ">=3.7.9,<3.11"
 jupyter = "^1.0.0"
 spacy = "^3.3.0"
+stanza = "^1.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
