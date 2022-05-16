@@ -9,7 +9,7 @@ def create_csv(list_tokens, list_TF, list_TF_IDF):
           list_TF_IDF: float list -- Uma lista lista dos valores de TF-IDF
         
         Return:
-          
+
     """
 
     df = pd.DataFrame({'Tokens': list_tokens,
