@@ -18,4 +18,11 @@ class Lemmatization:
         
     def lemmatize(self, text: Union[str, List]):
         doc = self.model(text)
+        print(
+            *[
+                f'word: {word.text} \tlemma: {word.lemma}' 
+                for sent in doc.sentences for word in sent.words
+            ],
+            sep='\n'
+        )
         return [word.lemma for sentence in doc.sentences for word in sentence.words]

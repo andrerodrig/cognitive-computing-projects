@@ -1,5 +1,6 @@
 import nltk
 import  numpy as np
+from typing import List
 
 from nltk.tokenize import word_tokenize
 
@@ -25,14 +26,12 @@ class TFIDF():
                 if word not in self.word_set:
                     self.word_set.append(word)
         self.word_set = set(self.word_set)
-        
         return self.word_set
     
     def get_wordset_index_dict(self):
         self.index_dict = {}
         for index, word in enumerate(self.word_set):
             self.index_dict[word] = index
-        
         return self.index_dict
 
     def count_dict(self):
@@ -56,7 +55,6 @@ class TFIDF():
             palavras_ = word_count[word] + 1
         except:
             palavras_ = 1
-
         return np.log(total_documentos/palavras_)
 
     def tf_idf(self):
@@ -66,19 +64,35 @@ class TFIDF():
         for word in word_list:
             tf = self.tf(word_list, word)
             idf = self.idf(word)
-
             result = tf * idf
             tf_idf_vec[self.index_dict[word]] = result
         return  tf_idf_vec
-
-    # def select_n_largets(self, tf_idf_vec):
-    #     retorno = list()
-    #     for vector in tf_idf_vec:
-    #         if max(vector) != 0 and max(vector)>0:
-    #             retorno.append(max(vector))
-    #     return retorno
-
-    def select_n_largests(self, vectors):
+    
+    def get_tuple_index_word_tfidf(self, vectors: List):
         indexed_tfidf = [(v, vectors[v]) for v in self.index_dict.values()]
-        max_tfidf_list = [(k, indexed_tfidf[v][1]) for k, v in self.index_dict.items()]
-        return sorted(max_tfidf_list, key=lambda x: x[1], reverse=True)[:5]
+       
+        only_tfidf_values = [tf for tf in list(zip(*indexed_tfidf))[1]]
+        tuple_index_word_tfidf = [
+            (word, index, tf) for index, word, tf
+            in zip(self.index_dict.keys(), self.index_dict.values(), only_tfidf_values)
+        ]
+        return tuple_index_word_tfidf
+
+    def select_n_largests(self, vectors: List, n: int = 5):
+        return sorted(
+            self.get_tuple_index_word_tfidf(vectors=vectors),
+            key=lambda x: x[2],
+            reverse=True
+        )[:n]
+
+    def get_closest_neighbors(self, vectors: List, n: int = 5):
+        tuple_iwt = self.get_tuple_index_word_tfidf(vectors)
+        key_neighbors_list = []
+        for tup in self.select_n_largests(vectors=vectors, n=n):
+            neighbors_list = [
+                t for t in tuple_iwt if abs(t[0] - tup[0]) <= 2
+            ]
+            key_neighbors_list.append(
+                {'key': tup, 'neighbors': [t for t in neighbors_list]}
+            )
+        return key_neighbors_list
