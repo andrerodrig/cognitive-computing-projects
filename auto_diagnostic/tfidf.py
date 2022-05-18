@@ -3,36 +3,39 @@ import  numpy as np
 from typing import List
 
 from nltk.tokenize import word_tokenize
+from auto_diagnostic.preprocess import get_stopwords
 
 
 class TFIDF():
-    def __init__(self,word_set,sentences):
-        self.word_set = word_set
-        self.sentences = sentences
+    def __init__(self, word_set: List = None, sentences: List = None):
+        self.word_set = [] if not word_set else word_set
+        self.sentences = [] if not sentences else sentences
+        self.stopwords = get_stopwords()
         self.index_dict = {}
-        i = 0
-        for word in word_set:
-            self.index_dict[word] = i
-            i += 1
+        # i = 0
+        # for word in word_set:
+        #     self.index_dict[word] = i
+        #     i += 1
             
     def get_wordset_from_text(self, text: str):
         self.word_set = []
         self.sentences = []
         for sent in text:
-            x = [i.lower() for  i in word_tokenize(sent) if i.isalpha()]
+            x = [i.lower() for i in word_tokenize(sent) if i.isalpha()]
             #x = [word for word in x if word not in set_Stopwords]
             self.sentences.append(x)
             for word in x:
-                if word not in self.word_set:
+                if word not in self.word_set and word not in self.stopwords:
                     self.word_set.append(word)
         self.word_set = set(self.word_set)
+        self.index_dict = self.get_wordset_index_dict()
         return self.word_set
     
     def get_wordset_index_dict(self):
-        self.index_dict = {}
+        index_dict = {}
         for index, word in enumerate(self.word_set):
-            self.index_dict[word] = index
-        return self.index_dict
+            index_dict[word] = index
+        return index_dict
 
     def count_dict(self):
         word_count = {}
@@ -59,8 +62,8 @@ class TFIDF():
 
     def tf_idf(self):
         tf_idf_vec = np.zeros(len(self.word_set),)
-        word_list = [word for sentence in self.sentences for word in sentence]
-
+        # word_list = [word for sentence in self.sentences for word in sentence]
+        word_list = list(self.word_set)
         for word in word_list:
             tf = self.tf(word_list, word)
             idf = self.idf(word)
@@ -93,6 +96,30 @@ class TFIDF():
                 t for t in tuple_iwt if abs(t[0] - tup[0]) <= 2
             ]
             key_neighbors_list.append(
-                {'key': tup, 'neighbors': [t for t in neighbors_list]}
+                {'key': tup, 'neighbors': [t for t in neighbors_list if t != tup]}
             )
         return key_neighbors_list
+
+
+if __name__ == '__main__':
+    
+    from dataloader.makedata import Dataloader
+    from auto_diagnostic.lemmatization import Lemmatization
+    from auto_diagnostic.preprocess import tokenize
+    
+    
+    df = Dataloader().make_csv()
+
+    tokenized = tokenize(df['text_column'])
+
+    model = Lemmatization()
+    lemmatized_list = model.lemmatize(tokenized)
+
+    tfidf = TFIDF()
+    words = tfidf.get_wordset_from_text(lemmatized_list)
+    
+    vectors = tfidf.tf_idf()
+    
+    neighbors = tfidf.get_closest_neighbors(vectors)
+        
+    print(words)
