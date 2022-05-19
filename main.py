@@ -1,5 +1,3 @@
-import nltk
-
 from auto_diagnostic.tfidf import TFIDF
 from auto_diagnostic.lemmatization import Lemmatization
 from auto_diagnostic.preprocess import tokenize
