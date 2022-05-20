@@ -9,5 +9,10 @@ def tokenize(corpus_list: List[str]) -> List[str]:
 
 def get_stopwords(language: str = 'portuguese') -> List[str]:
     nltk.download('stopwords')
-    return nltk.corpus.stopwords.words(language)
-    
+    custom_stopwords = [
+        'i', 'ii', 'iii', 'iv', 'ate', 'sera', 'vs',
+        'instituto', 'vs', 'of', 'respectivamente'
+    ]
+    nltk_stopwords = nltk.corpus.stopwords.words(language)
+    nltk_stopwords.extend(custom_stopwords)    
+    return list(set(nltk_stopwords))
