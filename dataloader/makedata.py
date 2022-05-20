@@ -28,7 +28,7 @@ class Dataloader():
 
     def _padronizacao(self,df, text_field):
         for i in range(len(df)):
-            df[text_field][i]=unidecode.unidecode(df[text_field].iloc[i])
+            df[text_field][i] = unidecode.unidecode(df[text_field].iloc[i])
         df[text_field] = df[text_field].str.lower()
         df[text_field] = df[text_field].str.replace(r"[()\;\,\%\-\/\--\.!?@\'\`\"\_\n]", " ")
 
