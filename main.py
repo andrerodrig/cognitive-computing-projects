@@ -14,7 +14,8 @@ def main():
     word_set = tfidf.get_wordset_from_text(lemmatized_list)
     tfidf_vectors = tfidf.tf_idf()
     closest = tfidf.get_closest_neighbors(vectors=tfidf_vectors)
-    print(closest)
+    for key in closest:
+        print(key)
 
-
-main()
+if __name__=="__main__":
+    main()

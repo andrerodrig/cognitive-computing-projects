@@ -3,6 +3,7 @@ from pathlib import Path
 import fitz
 import unidecode
 import pandas as pd
+from nltk.corpus import stopwords
 
 from auto_diagnostic.config import root_path
 
@@ -13,6 +14,7 @@ class Dataloader():
     """
     def __init__(self, path=str(root_path() / 'data/raw/')):
         self.path = path
+        self.stop = stopwords.words('portuguese')
 
     def _load(self,caminho) -> str:
         """
@@ -31,6 +33,7 @@ class Dataloader():
             df[text_field][i]=unidecode.unidecode(df[text_field].iloc[i])
         df[text_field] = df[text_field].str.lower()
         df[text_field] = df[text_field].str.replace(r"[()\;\,\%\-\/\--\.!?@\'\`\"\_\n]", " ")
+        df['txt_sem_stopwords'] = df[text_field].apply(lambda x: ' '.join([word for word in x.split() if word not in (self.stop)]))
 
         return df
 
