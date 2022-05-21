@@ -3,6 +3,7 @@ from auto_diagnostic.lemmatization import Lemmatization
 from auto_diagnostic.preprocess import tokenize
 
 from dataloader.makedata import Dataloader
+from graphs import word_graph
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
     closest = tfidf.get_closest_neighbors(vectors=tfidf_vectors)
     for key in closest:
         print(key)
+    word_graph.graph(closest)
 
 if __name__=="__main__":
     main()
