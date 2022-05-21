@@ -37,6 +37,14 @@ poetry shell
 source .venv/bin/activate
 ```
 
+### CLI
+
+O projeto possui uma CLI que permite gerar o grafo de palavras para um arquivo PDF passado como argumento.
+
+```
+auto-diagnostic [-f|--filename FILENAME]
+```
+
 ### Desenvolvimento
 
 O projeto é estruturado da seguinte forma:

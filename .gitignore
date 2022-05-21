@@ -15,3 +15,7 @@ __pycache__
 # Large data files
 data/processed/*
 !data/processed/.gitkeep
+
+# Build
+dist/
+build/
