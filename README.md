@@ -45,6 +45,8 @@ O projeto possui uma CLI que permite gerar o grafo de palavras para um arquivo P
 auto-diagnostic [-f|--filename FILENAME]
 ```
 
+**OBS:** No momento, o CLI só funciona para os três documentos PDF que estão em `data/raw/`. Mas futuramente podemos extender para um documento qualquesr.
+
 ### Desenvolvimento
 
 O projeto é estruturado da seguinte forma:

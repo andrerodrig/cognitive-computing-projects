@@ -13,10 +13,10 @@ class TFIDF():
         self.stopwords = get_stopwords()
         self.index_dict = {}
             
-    def get_wordset_from_text(self, text: str):
+    def get_wordset_from_text(self, text_list: List[str]):
         self.word_set = []
         self.sentences = []
-        for sent in text:
+        for sent in text_list:
             x = [i.lower() for i in word_tokenize(sent) if i.isalpha()]
             #x = [word for word in x if word not in set_Stopwords]
             self.sentences.append(x)

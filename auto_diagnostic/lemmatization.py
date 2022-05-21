@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Any
 from auto_diagnostic.preprocess import get_stopwords
 import stanza
 
@@ -18,7 +18,7 @@ class Lemmatization:
             logging_level='ERROR'
         )
         
-    def lemmatize(self, text: Union[str, List], debug: bool = False):
+    def lemmatize(self, text: Union[str, List], debug: bool = False) -> List[str]:
         doc = self.model(text)
         if debug:
             print(
@@ -41,17 +41,15 @@ class Lemmatization:
         text: Union[str, List],
         iterations: int = 2,
         debug: bool = False
-    ):
+    ) -> Any: 
         doc = text
-        for it in range(iterations):
+        for _ in range(iterations):
             doc = self.lemmatize(doc, debug=debug)
         return doc
 
 
 if __name__ == '__main__':
-    import pandas as pd
 
-    from auto_diagnostic.tfidf import TFIDF
     from auto_diagnostic.lemmatization import Lemmatization
     from auto_diagnostic.preprocess import tokenize
 
