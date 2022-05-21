@@ -12,10 +12,6 @@ class TFIDF():
         self.sentences = [] if not sentences else sentences
         self.stopwords = get_stopwords()
         self.index_dict = {}
-        # i = 0
-        # for word in word_set:
-        #     self.index_dict[word] = i
-        #     i += 1
             
     def get_wordset_from_text(self, text: str):
         self.word_set = []

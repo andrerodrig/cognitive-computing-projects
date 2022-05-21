@@ -12,7 +12,7 @@ class Dataloader():
         Metodo principal make_csv
 
     """
-    def __init__(self, path=str(root_path() / 'data/raw/')):
+    def __init__(self, path=str(root_path() / 'data/raw/*.pdf')):
         self.path = path
         self.stop = stopwords.words('portuguese')
 
@@ -39,7 +39,7 @@ class Dataloader():
 
     def load(self) -> list:
         retorno = []
-        for filename in glob.glob(str(Path(self.path) / '*.pdf')):
+        for filename in glob.glob(str(Path(self.path))):
             retorno.append(self._load(filename))
 
         return retorno

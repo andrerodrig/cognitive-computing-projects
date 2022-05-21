@@ -21,13 +21,11 @@ def graph(closest: list):
     node_sizes = nx.get_node_attributes(G, 'size')
     edge_weights = nx.get_edge_attributes(G, 'weight')
 
-    print(f'tamanho de node_sizes: {node_sizes}')
-    print(f'tamanho de edge_weights: {edge_weights}')
-
     pos = nx.spring_layout(G, k=0.5, iterations=20)
 
-    cmap = plt.cm.coolwarm
-    colors = [n for n in range(len(G.nodes()))]
+    # [TODO] Fazer com que o colormap mude de acordo com o crescimento do nó.
+    # cmap = plt.cm.coolwarm
+    # colors = [n for n in range(len(G.nodes()))]
 
     nx.draw(
         G,
@@ -37,8 +35,7 @@ def graph(closest: list):
         font_weight='bold',
         node_size=[n * 1.5 * 10 ** 5 for n in node_sizes.values()],
         width=list(edge_weights.values()),
-        cmap=cmap,
-        node_color=colors,
+        node_color='red',
         edge_color='grey',
         alpha=1
     )

@@ -20,6 +20,10 @@ matplotlib = "^3.5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+ipdb = "^0.13.9"
+
+[tool.poetry.scripts]
+auto-diagnostic = "main:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
