@@ -42,9 +42,11 @@ class TFIDF():
                     word_count[word] += 1
         return word_count
 
-    def tf(self,document,word):
-        tam = len(document)
-        ocorrencia = len([token for token in document if token == word])
+    def tf(self, word):
+        # tam = len(document)
+        tam = sum(self.count_dict().values())
+        document = self.count_dict()
+        ocorrencia = sum([count for token, count in document.items() if token == word])
         return ocorrencia/tam
 
     def idf(self,word):
@@ -61,7 +63,7 @@ class TFIDF():
         # word_list = [word for sentence in self.sentences for word in sentence]
         word_list = list(self.word_set)
         for word in word_list:
-            tf = self.tf(word_list, word)
+            tf = self.tf(word)
             idf = self.idf(word)
             result = tf * idf
             tf_idf_vec[self.index_dict[word]] = result
@@ -89,7 +91,8 @@ class TFIDF():
         key_neighbors_list = []
         for tup in self.select_n_largests(vectors=vectors, n=n):
             neighbors_list = [
-                t for t in tuple_iwt if abs(t[0] - tup[0]) <= 2
+                (*t[:2], self.tf(tup[1]))
+                for t in tuple_iwt if abs(t[0] - tup[0]) <= 2
             ]
             key_neighbors_list.append(
                 {'key': tup, 'neighbors': [t for t in neighbors_list if t != tup]}
@@ -118,4 +121,4 @@ if __name__ == '__main__':
     
     neighbors = tfidf.get_closest_neighbors(vectors)
         
-    print(words)
+    print(neighbors)

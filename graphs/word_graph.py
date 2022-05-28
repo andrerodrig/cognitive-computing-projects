@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def graph(closest: list):
-    plt.subplots(figsize=(14, 14))
+    fig, ax = plt.subplots(figsize=(14, 14))
 
     G = nx.Graph()
 
@@ -39,4 +39,6 @@ def graph(closest: list):
         edge_color='grey',
         alpha=1
     )
+    ax = plt.gca() # to get the current axis
+    ax.collections[0].set_edgecolor("#000") 
     plt.show()
