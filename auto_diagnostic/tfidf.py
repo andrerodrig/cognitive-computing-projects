@@ -91,11 +91,11 @@ class TFIDF():
         key_neighbors_list = []
         for tup in self.select_n_largests(vectors=vectors, n=n):
             neighbors_list = [
-                (*t[:2], self.tf(tup[1]))
+                (*t[:2], self.tf(t[1]))
                 for t in tuple_iwt if abs(t[0] - tup[0]) <= 2
             ]
             key_neighbors_list.append(
-                {'key': tup, 'neighbors': [t for t in neighbors_list if t != tup]}
+                {'key': tup, 'neighbors': [t for t in neighbors_list if t[:2] != tup[:2]]}
             )
         return key_neighbors_list
 

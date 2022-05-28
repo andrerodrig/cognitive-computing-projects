@@ -1,5 +1,10 @@
 import networkx as nx
 from matplotlib import pyplot as plt
+from dataloader.makedata import Dataloader
+
+from auto_diagnostic.tfidf import TFIDF
+from auto_diagnostic.lemmatization import Lemmatization
+from auto_diagnostic.preprocess import tokenize
 
 
 def graph(closest: list):
@@ -12,7 +17,7 @@ def graph(closest: list):
         node_key = node['key']
         close_nodes = node['neighbors']
 
-        G.add_node(node_key[1])
+        G.add_node(node_key[1], size=node_key[2])
 
         for n in close_nodes:
             G.add_node(n[1], size=n[2])
@@ -31,9 +36,9 @@ def graph(closest: list):
         G,
         pos,
         with_labels=True,
-        font_size=12,
+        font_size=10,
         font_weight='bold',
-        node_size=[n * 1.5 * 10 ** 5 for n in node_sizes.values()],
+        node_size=[n * 10 ** 5 for n in node_sizes.values()],
         width=list(edge_weights.values()),
         node_color='red',
         edge_color='grey',
@@ -42,3 +47,16 @@ def graph(closest: list):
     ax = plt.gca() # to get the current axis
     ax.collections[0].set_edgecolor("#000") 
     plt.show()
+
+
+if __name__ == '__main__':
+    dataloader = Dataloader()
+    df = dataloader.make_csv()
+    tfidf = TFIDF()
+    tokenized = tokenize(df['text_column'])
+    model = Lemmatization()
+    lemmatized_list = model.lemmatize(tokenized)
+    _ = tfidf.get_wordset_from_text(lemmatized_list)
+    tfidf_vectors = tfidf.tf_idf()
+    closest = tfidf.get_closest_neighbors(vectors=tfidf_vectors)
+    graph(closest)
