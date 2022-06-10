@@ -2,7 +2,7 @@
 name = "computer_vision"
 version = "0.1.0"
 description = "Computer Vision Project"
-authors = ["André Rodrigues <andrelmarques11@gmail.com>"]
+authors = ["André Rodrigues <andrelmarques11@gmail.com>, Renato Rodrigues <rodriguesrenato100@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
