@@ -2,7 +2,7 @@
 name = "auto-diagnostic"
 version = "0.1.0"
 description = ""
-authors = ["André Rodrigues <andrelmarques11@gmail.com>, Renato Rodrigues <rodriguesrenato100@gmail.com>"]
+authors = ["André Rodrigues <andrelmarques11@gmail.com>, Renato Rodrigues <rodriguesrenato100@gmail.com>, Carlos Matheus <cmatheusrm@alu.ufc.br"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.0,<3.11"
@@ -17,6 +17,7 @@ Unidecode = "^1.3.4"
 networkx = "^2.8.1"
 matplotlib = "^3.5.2"
 numpy = "^1.22.4"
+opencv-python="^ 4.3.0"
 
 
 [tool.poetry.dev-dependencies]
