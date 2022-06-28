@@ -1,16 +1,18 @@
 import cv2
 import os
 import numpy as np
-from computer_vision.src.image_proc import area_folha,\
-    comprimento_folha,largura_folha,subtract_sobel,open_otsu,\
-    watershed_proc,dataframe_csv, IoU_image_seg, plot_and_save
+import computer_vision.src.image_proc as func
 
 
-def pipeline(path_imgs):
+def pipeline(path_imgs, path_save, segmentation=1):
     """
         Pipeline do projeto
         Arguments:
           path_imgs: str -- caminho para a pasta das imagens
+          path_save: str -- caminho para salvar os resultados
+          segmentation: int -- 1: Limiar de Otsu
+                               2: Sobel
+                               3: Canny
 
         Return:
     """
@@ -38,28 +40,34 @@ def pipeline(path_imgs):
         resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
         gray = cv2.cvtColor(resized, cv2.COLOR_RGB2GRAY)
 
-        sob = subtract_sobel(gray)
-        ot = open_otsu(gray)
-        wat = watershed_proc(resized)
+        if segmentation == 1:
+            seg = func.open_otsu(gray)
 
-        plot_and_save(resized, ot, f.split('.')[0])
+        elif segmentation == 2:
+            seg = func.subtract_sobel(gray)
 
-        l = largura_folha(ot)
-        c = comprimento_folha(ot)
-        area.append(area_folha(ot))
+        elif segmentation == 3:
+            seg = func.subtract_canny(gray)
+
+        func.plot_and_save(resized, seg, path_save, f.split('.')[0])
+
+        l = func.largura_folha(seg)
+        c = func.comprimento_folha(seg)
+        area.append(func.area_folha(seg))
         largura.append(l)
         comprimento.append(c)
 
         lar_max.append(np.argmax(l))
         comp_max.append(np.argmax(l))
 
-    dataframe_csv(name, area, lar_max, comp_max, 'data_valueMax.csv')
-    dataframe_csv(name, area, largura, comprimento, 'dataframe_final.csv')
+    func.dataframe_csv(name, area, lar_max, comp_max, 'data_valueMax.csv')
+    func.dataframe_csv(name, area, largura, comprimento, 'dataframe_final.csv')
 
 
 def main():
     path = 'images/'
-    pipeline(path)
+    path_save = 'data/'
+    pipeline(path, path_save)
 
 
 if __name__ == "__main__":

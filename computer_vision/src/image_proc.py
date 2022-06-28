@@ -26,53 +26,28 @@ def open_otsu(image):
         Arguments:
           image: np.array -- Uma matriz NumPy que representa a imagem na escala de cinza
                 pre-processada com a forma (num_rows, num_cols, num_channels)
-          blockSize: list -- tamanho da mascara do elemento estruturante
         Return:
           image_binary: np.array -- imagem binarizada
     """
-    #scale_percent = 80 # percent of original size
-    #width = int(image.shape[1] * scale_percent / 100)
-    #height = int(image.shape[0] * scale_percent / 100)
-
-    #blockSize=(width, height)
-    blockSize=(80,80)
-
-    structuring_element= cv2.getStructuringElement(
-        cv2.MORPH_ELLIPSE, blockSize
-    )
-    image_treated = cv2.morphologyEx(
-        image, cv2.MORPH_OPEN, structuring_element
-    )
-    image_treated = cv2.subtract(image, image_treated)
-
-    image_treated = cv2.add(image_treated, image_treated)
-
-    tipo = cv2.THRESH_BINARY + cv2.THRESH_OTSU
-    limiar, image_binary = cv2.threshold(image_treated, 0, 255, tipo)
+    # image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    tipo = cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU
+    limiar, image_binary = cv2.threshold(image, 0, 255, tipo)
 
     return image_binary
 
 
-def watershed_proc(img2):
-    img = img2
-    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    gray = cv2.cvtColor(img2, cv2.COLOR_RGB2GRAY)  # escala de cinza
-    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)  # pegando threshold
-    kernel = np.ones((3, 3), np.uint8)  # criando o kernel 3 x 3
-    opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel,
-                              iterations=2)  # aplicando tecnicas de erosão e posteriomente dilatação
-    dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)  #
-    sure_bg = cv2.dilate(opening, kernel, iterations=3)
-    ret, sure_fg = cv2.threshold(dist_transform, 0.7 * dist_transform.max(), 255, 0)
-    sure_fg = np.uint8(sure_fg)
-    unknown = cv2.subtract(sure_bg, sure_fg)
-    ret, markers = cv2.connectedComponents(sure_fg)
-    markers = markers + 1
-    markers[unknown == 255] = 0
-    markers = cv2.watershed(img, markers)
-    img[markers == -1] = [255, 0, 0]
-
-    return markers
+def subtract_canny(image_gray):
+    """
+        Funcao responsavel por realçar uma imagem utilizando a operação de subtração com o filtro canny
+        Arguments:
+          image_gray: np.array -- Uma matriz NumPy que representa a imagem na escala de cinza
+                com a forma (num_rows, num_cols, num_channels)
+        Return:
+          image_enhancement: np.array -- Imagem realçada
+    """
+    canny = cv2.Canny(image_gray, 100, 200)
+    image_enhancement = cv2.subtract(image_gray, canny)
+    return image_enhancement
 
 
 def IoU_image_seg(img_gray, ground_truth, img_seg):
@@ -161,14 +136,14 @@ def dataframe_csv(name, area, larguras, comprimentos, path):
     df.to_csv(path)
 
 
-def plot_and_save(img, maskwater, name_img):
+def plot_and_save(img, maskwater, path_save,name_img):
     fig, ax = plt.subplots(1, 2, figsize=(10, 15))
-    fig.suptitle('Imagem original x mask ')
+    fig.suptitle('Imagem original x Segmentation ')
     ax[0].imshow(img, cmap='gray')
     ax[0].set_title('Imagem original')
     ax[1].imshow(maskwater, cmap='gray')
-    ax[1].set_title('mask')
+    ax[1].set_title('Segmentation')
     #plt.imshow()
 
-    plt.savefig('data/' + name_img + '.jpg',
+    plt.savefig(path_save + name_img + '.jpg',
                 bbox_inches='tight', pad_inches=0)
